@@ -4,7 +4,7 @@ var http = require('http').createServer(app);
 var socketIO = require('socket.io');
 var io = require('socket.io')(http);
 
-// Expressで性的ファイルを利用するためにexpress.staticミドルウェア関数を使う
+// Expressで静的ファイルを利用するためにexpress.staticミドルウェア関数を使う
 app.use(express.static(__dirname + '/img'));
 
 app.get('/', function(req, res){
@@ -34,6 +34,6 @@ io.on('connection', function(socket){
 });
 
 
-http.listen(5000, function(){
-	console.log('listening on *:5000');
+http.listen(process.env.PORT || 5000, function(){
+	console.log('Server running.');
 });
