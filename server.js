@@ -13,22 +13,6 @@ app.get('/', function(req, res){
 
 
 io.on('connection', function(socket){
-
-	// クライアントに送信するデータ
-	/*
-	var dataToClient = { hoge: 1};
-	socket.emit('dataName1', dataToClient);
-	socket.broadcast.emit('dataName1', dataToClient);
-	*/
-
-
-	// クライアントからのでーたの受信
-	/*
-	socket.on('dataName2', function(dataFromClient){
-		console.log(dataFromClient.fuga);
-	});
-	*/
-
 	socket.on("key", function(dataFromClient){
 		switch(dataFromClient.button){
 			case "up":
@@ -47,8 +31,6 @@ io.on('connection', function(socket){
 				break;
 		}
 	});
-
-
 });
 
 

@@ -16,21 +16,13 @@
 <script src='/socket.io/socket.io.js'></script>
 <script>
 	// サーバーに接続
-	//var socket = io.connect(location.origin);
 	var socket = io();
 
+	// ねずみの座標
 	var x = 0;
 	var y = 0;
-	// サーバーにデータを送信
-	//socket.emit("dataName2", { fuga: "piyo" });
 
-	// サーバーからのデータを受信
-	/*
-	socket.on("dataName1", function(dataFromServer){
-		console.log(dataFromServer.hoge);
-	});
-	*/
-
+	// ねずみの座標同期して移動
 	socket.on("move", function(dataFromServer){
 		switch(dataFromServer.dir){
 			case "up":
@@ -55,9 +47,9 @@
 	});
 
 
-	// ねずみ動かす
 	addEventListener("keydown", keydownfunc, false);
 
+	// 押された矢印キーに応じてメッセージを送る & ねずみを移動
 	function keydownfunc(event){
 		var key_code = event.keyCode;
 		switch(key_code){
