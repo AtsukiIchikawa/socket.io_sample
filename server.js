@@ -1,0 +1,57 @@
+var express = require('express');
+var app = require('express')();
+var http = require('http').createServer(app);
+var socketIO = require('socket.io');
+var io = require('socket.io')(http);
+
+// Expressで性的ファイルを利用するためにexpress.staticミドルウェア関数を使う
+app.use(express.static(__dirname + '/img'));
+
+app.get('/', function(req, res){
+	res.sendFile(__dirname + '/index.html');
+});
+
+
+io.on('connection', function(socket){
+
+	// クライアントに送信するデータ
+	/*
+	var dataToClient = { hoge: 1};
+	socket.emit('dataName1', dataToClient);
+	socket.broadcast.emit('dataName1', dataToClient);
+	*/
+
+
+	// クライアントからのでーたの受信
+	/*
+	socket.on('dataName2', function(dataFromClient){
+		console.log(dataFromClient.fuga);
+	});
+	*/
+
+	socket.on("key", function(dataFromClient){
+		switch(dataFromClient.button){
+			case "up":
+				socket.broadcast.emit("move", { dir: "up"});
+				break;
+			case "down":
+				socket.broadcast.emit("move", { dir: "down"});
+				break;
+			case "right":
+				socket.broadcast.emit("move", { dir: "right"});
+				break;
+			case "left":
+				socket.broadcast.emit("move", { dir: "left"});
+				break;
+			default:
+				break;
+		}
+	});
+
+
+});
+
+
+http.listen(5000, function(){
+	console.log('listening on *:5000');
+});

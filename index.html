@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<style>
+		#mouse{
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+	</style>
+</head>
+<body>
+<img id="mouse" src="mouse.jpeg" width="45px">
+
+<script src='/socket.io/socket.io.js'></script>
+<script>
+	// サーバーに接続
+	//var socket = io.connect(location.origin);
+	var socket = io();
+
+	var x = 0;
+	var y = 0;
+	// サーバーにデータを送信
+	//socket.emit("dataName2", { fuga: "piyo" });
+
+	// サーバーからのデータを受信
+	/*
+	socket.on("dataName1", function(dataFromServer){
+		console.log(dataFromServer.hoge);
+	});
+	*/
+
+	socket.on("move", function(dataFromServer){
+		switch(dataFromServer.dir){
+			case "up":
+				y += 10;
+				document.getElementById('mouse').style.top = y + "px";
+				break;
+			case "down":
+				y -= 10;
+				document.getElementById('mouse').style.top = y + "px";
+				break;
+			case "right":
+				x += 10;
+				document.getElementById('mouse').style.left = x + "px";
+				break;
+			case "left":
+				x -= 10;
+				document.getElementById('mouse').style.left = x + "px";
+				break;
+			default:
+				break;
+		}
+	});
+
+
+	// ねずみ動かす
+	addEventListener("keydown", keydownfunc, false);
+
+	function keydownfunc(event){
+		var key_code = event.keyCode;
+		switch(key_code){
+			case 37:
+				x -= 10;
+				socket.emit("key", { button: "left"});
+				break;
+			case 38:
+				y -= 10;
+				socket.emit("key", { button: "down"});
+				break;
+			case 39:
+				x += 10;
+				socket.emit("key", { button: "right"});
+				break;
+			case 40:
+				y += 10;
+				socket.emit("key", { button: "up"});
+				break;
+			default:
+				console.log('nothing');
+				break;
+		}
+		document.getElementById('mouse').style.top = y + "px";
+		document.getElementById('mouse').style.left = x + "px";
+	}
+
+</script>
+
+</body>
+</html>
